@@ -137,33 +137,8 @@ public class OfferItem {
         } else if (!discount.equals(other.discount)) {
             return false;
         }
-        if (productName == null) {
-            if (other.productName != null) {
-                return false;
-            }
-        } else if (!productName.equals(other.productName)) {
-            return false;
-        }
-        if (productPrice == null) {
-            if (other.productPrice != null) {
-                return false;
-            }
-        } else if (!productPrice.equals(other.productPrice)) {
-            return false;
-        }
-        if (productId == null) {
-            if (other.productId != null) {
-                return false;
-            }
-        } else if (!productId.equals(other.productId)) {
-            return false;
-        }
-        if (!productType.equals(other.productType)) {
-            return false;
-        }
-        if (quantity != other.quantity) {
-            return false;
-        }
+        if (checIsNull(other)) return false;
+
         if (totalCost == null) {
             return other.totalCost == null;
         } else return totalCost.equals(other.totalCost);
@@ -177,34 +152,7 @@ public class OfferItem {
      * @return
      */
     public boolean sameAs(OfferItem other, double delta) {
-        if (productName == null) {
-            if (other.productName != null) {
-                return false;
-            }
-        } else if (!productName.equals(other.productName)) {
-            return false;
-        }
-        if (productPrice == null) {
-            if (other.productPrice != null) {
-                return false;
-            }
-        } else if (!productPrice.equals(other.productPrice)) {
-            return false;
-        }
-        if (productId == null) {
-            if (other.productId != null) {
-                return false;
-            }
-        } else if (!productId.equals(other.productId)) {
-            return false;
-        }
-        if (!productType.equals(other.productType)) {
-            return false;
-        }
-
-        if (quantity != other.quantity) {
-            return false;
-        }
+        if (checIsNull(other)) return false;
 
         BigDecimal max;
         BigDecimal min;
@@ -220,6 +168,35 @@ public class OfferItem {
         BigDecimal acceptableDelta = max.multiply(BigDecimal.valueOf(delta / 100));
 
         return acceptableDelta.compareTo(difference) > 0;
+    }
+
+    private boolean checIsNull(OfferItem other) {
+        if (productName == null) {
+            if (other.productName != null) {
+                return true;
+            }
+        } else if (!productName.equals(other.productName)) {
+            return true;
+        }
+        if (productPrice == null) {
+            if (other.productPrice != null) {
+                return true;
+            }
+        } else if (!productPrice.equals(other.productPrice)) {
+            return true;
+        }
+        if (productId == null) {
+            if (other.productId != null) {
+                return true;
+            }
+        } else if (!productId.equals(other.productId)) {
+            return true;
+        }
+        if (!productType.equals(other.productType)) {
+            return true;
+        }
+
+        return quantity != other.quantity;
     }
 
 }
