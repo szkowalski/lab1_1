@@ -27,9 +27,7 @@ public class OfferItem {
 
     // discount
     private Disscount disscount;
-   //private final String discountCause;
 
-    //private final BigDecimal discount;
 
 
     public OfferItem(String productId, BigDecimal productPrice,String productCurrenty, String productName, Date productSnapshotDate,
@@ -50,7 +48,6 @@ public class OfferItem {
         }
 
         this.money = new Money(productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue),productCurrenty);
-       //this.totalCost = productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue);
     }
 
     public String getProductId() {
