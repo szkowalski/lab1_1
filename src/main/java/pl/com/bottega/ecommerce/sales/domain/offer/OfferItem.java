@@ -24,7 +24,6 @@ public class OfferItem {
     private final int quantity;
     private  Money money;
 
-    private String currency;
 
     // discount
     private final String discountCause;
@@ -76,7 +75,7 @@ public class OfferItem {
     }
 
     public String getTotalCostCurrency() {
-        return currency;
+        return money.getCurrency();
     }
 
     public BigDecimal getDiscount() {
