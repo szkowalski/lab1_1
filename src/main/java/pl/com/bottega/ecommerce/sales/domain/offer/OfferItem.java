@@ -27,23 +27,20 @@ public class OfferItem {
     private final BigDecimal totalCost;
 
     // discount
-    private final String discountCause;
-
-    private final BigDecimal discount;
+    private final Discount discount;
 
     public OfferItem(Product product, int quantity) {
         this(product, quantity, null, null);
     }
 
-    public OfferItem(Product product, int quantity, BigDecimal discount, String discountCause) {
+    public OfferItem(Product product, int quantity, Discount discount, String discountCause) {
         this.product = product;
         this.quantity = quantity;
         this.discount = discount;
-        this.discountCause = discountCause;
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
-            discountValue = discountValue.subtract(discount);
+            discountValue = discountValue.subtract(discount.getDiscount());
         }
 
         this.totalCost = product.getPrice().getProductPrice(). multiply(new BigDecimal(quantity)).subtract(discountValue);
@@ -78,11 +75,11 @@ public class OfferItem {
     }
 
     public BigDecimal getDiscount() {
-        return discount;
+        return discount.getDiscount();
     }
 
     public String getDiscountCause() {
-        return discountCause;
+        return discount.getDiscountCause();
     }
 
     public int getQuantity() {
