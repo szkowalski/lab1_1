@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Offer {
 
+    public static final int PRIME = 31;
+    public static final int RESULT = 1;
     private List<OfferItem> availableItems = new ArrayList<OfferItem>();
 
     private List<OfferItem> unavailableItems = new ArrayList<OfferItem>();
@@ -24,9 +26,8 @@ public class Offer {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (availableItems == null ? 0 : availableItems.hashCode());
+        int result = RESULT;
+        result = PRIME * RESULT + (availableItems == null ? 0 : availableItems.hashCode());
         return result;
     }
 
@@ -35,21 +36,13 @@ public class Offer {
         if (this == obj) {
             return true;
         }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass() || obj == null) {
             return false;
         }
         Offer other = (Offer) obj;
-        if (availableItems == null) {
-            if (other.availableItems != null) {
-                return false;
-            }
-        } else if (!availableItems.equals(other.availableItems)) {
+        if (availableItems == null && other.availableItems != null) {
             return false;
-        }
-        return true;
+        } else return availableItems.equals(other.availableItems);
     }
 
     /**
