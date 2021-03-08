@@ -1,4 +1,8 @@
 /target/
-/.settings/
+/doc/
 /.classpath
 /.project
+.settings
+/.idea/
+jobs2d.iml
+lab1_1.iml
