@@ -26,20 +26,23 @@ public class OfferItem {
 
 
     // discount
-    private final String discountCause;
+    private Disscount disscount;
+   //private final String discountCause;
 
-    private final BigDecimal discount;
+    //private final BigDecimal discount;
 
 
     public OfferItem(String productId, BigDecimal productPrice,String productCurrenty, String productName, Date productSnapshotDate,
             String productType, int quantity, BigDecimal discount, String discountCause) {
 
-
+        //product
         this.product = new Product(productId, new Money(productPrice,productCurrenty), productName,productSnapshotDate,productType);
 
         this.quantity = quantity;
-        this.discount = discount;
-        this.discountCause = discountCause;
+
+
+        // disount
+        this.disscount = new Disscount(discountCause,discount);
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
@@ -79,11 +82,11 @@ public class OfferItem {
     }
 
     public BigDecimal getDiscount() {
-        return discount;
+        return disscount.getDiscount();
     }
 
     public String getDiscountCause() {
-        return discountCause;
+        return disscount.getDiscountCause();
     }
 
     public int getQuantity() {
@@ -94,7 +97,7 @@ public class OfferItem {
     public int hashCode() {
         final int prime = PRIME;
         int result = RESULT;
-        result = prime * result + (discount == null ? 0 : discount.hashCode());
+        result = prime * result + (disscount.getDiscount() == null ? 0 : disscount.getDiscount().hashCode());
         result = prime * result + (product.getName() == null ? 0 : product.getName().hashCode());
         result = prime * result + (product.getPrice() == null ? 0 : product.getPrice().hashCode());
         result = prime * result + (product.getId() == null ? 0 : product.getId().hashCode());
@@ -116,11 +119,11 @@ public class OfferItem {
             return false;
         }
         OfferItem other = (OfferItem) obj;
-        if (discount == null) {
-            if (other.discount != null) {
+        if (disscount.getDiscount() == null) {
+            if (other.disscount.getDiscount() != null) {
                 return false;
             }
-        } else if (!discount.equals(other.discount)) {
+        } else if (!disscount.getDiscount().equals(other.getDiscount())) {
             return false;
         }
         if (checIsNull(other)) return false;
