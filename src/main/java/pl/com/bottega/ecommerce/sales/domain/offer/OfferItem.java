@@ -16,88 +16,74 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class OfferItem {
-
+    public static final int PRIME = 31;
+    public static final int RESULT = 31;
     // product
-    private String productId;
+    private Product product;
 
-    private BigDecimal productPrice;
+    private final int quantity;
+    private  Money money;
 
-    private String productName;
-
-    private Date productSnapshotDate;
-
-    private String productType;
-
-    private int quantity;
-
-    private BigDecimal totalCost;
-
-    private String currency;
 
     // discount
-    private String discountCause;
+    private Disscount disscount;
 
-    private BigDecimal discount;
 
-    public OfferItem(String productId, BigDecimal productPrice, String productName, Date productSnapshotDate,
-            String productType, int quantity) {
-        this(productId, productPrice, productName, productSnapshotDate, productType, quantity, null, null);
-    }
 
-    public OfferItem(String productId, BigDecimal productPrice, String productName, Date productSnapshotDate,
+    public OfferItem(String productId, BigDecimal productPrice,String productCurrenty, String productName, Date productSnapshotDate,
             String productType, int quantity, BigDecimal discount, String discountCause) {
-        this.productId = productId;
-        this.productPrice = productPrice;
-        this.productName = productName;
-        this.productSnapshotDate = productSnapshotDate;
-        this.productType = productType;
+
+        //product
+        this.product = new Product(productId, new Money(productPrice,productCurrenty), productName,productSnapshotDate,productType);
 
         this.quantity = quantity;
-        this.discount = discount;
-        this.discountCause = discountCause;
+
+
+        // disount
+        this.disscount = new Disscount(discountCause,discount);
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
             discountValue = discountValue.subtract(discount);
         }
 
-        this.totalCost = productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue);
+        this.money = new Money(productPrice.multiply(new BigDecimal(quantity)).subtract(discountValue),productCurrenty);
     }
 
     public String getProductId() {
-        return productId;
+        return product.getId();
     }
 
     public BigDecimal getProductPrice() {
-        return productPrice;
+        return product.getPrice();
     }
 
     public String getProductName() {
-        return productName;
+        return product.getName();
     }
 
     public Date getProductSnapshotDate() {
-        return productSnapshotDate;
+        return product.getProductSnapshotDate();
     }
 
     public String getProductType() {
-        return productType;
+        return product.getProductType();
     }
 
     public BigDecimal getTotalCost() {
-        return totalCost;
+        return money.getPrice();
     }
 
     public String getTotalCostCurrency() {
-        return currency;
+        return money.getCurrency();
     }
 
     public BigDecimal getDiscount() {
-        return discount;
+        return disscount.getDiscount();
     }
 
     public String getDiscountCause() {
-        return discountCause;
+        return disscount.getDiscountCause();
     }
 
     public int getQuantity() {
@@ -106,15 +92,15 @@ public class OfferItem {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (discount == null ? 0 : discount.hashCode());
-        result = prime * result + (productName == null ? 0 : productName.hashCode());
-        result = prime * result + (productPrice == null ? 0 : productPrice.hashCode());
-        result = prime * result + (productId == null ? 0 : productId.hashCode());
-        result = prime * result + (productType == null ? 0 : productType.hashCode());
+        final int prime = PRIME;
+        int result = RESULT;
+        result = prime * result + (disscount.getDiscount() == null ? 0 : disscount.getDiscount().hashCode());
+        result = prime * result + (product.getName() == null ? 0 : product.getName().hashCode());
+        result = prime * result + (product.getPrice() == null ? 0 : product.getPrice().hashCode());
+        result = prime * result + (product.getId() == null ? 0 : product.getId().hashCode());
+        result = prime * result + (product.getProductType() == null ? 0 : product.getProductType().hashCode());
         result = prime * result + quantity;
-        result = prime * result + (totalCost == null ? 0 : totalCost.hashCode());
+        result = prime * result + (money.getPrice() == null ? 0 : money.getPrice().hashCode());
         return result;
     }
 
@@ -130,101 +116,73 @@ public class OfferItem {
             return false;
         }
         OfferItem other = (OfferItem) obj;
-        if (discount == null) {
-            if (other.discount != null) {
+        if (disscount.getDiscount() == null) {
+            if (other.disscount.getDiscount() != null) {
                 return false;
             }
-        } else if (!discount.equals(other.discount)) {
+        } else if (!disscount.getDiscount().equals(other.getDiscount())) {
             return false;
         }
-        if (productName == null) {
-            if (other.productName != null) {
-                return false;
-            }
-        } else if (!productName.equals(other.productName)) {
-            return false;
-        }
-        if (productPrice == null) {
-            if (other.productPrice != null) {
-                return false;
-            }
-        } else if (!productPrice.equals(other.productPrice)) {
-            return false;
-        }
-        if (productId == null) {
-            if (other.productId != null) {
-                return false;
-            }
-        } else if (!productId.equals(other.productId)) {
-            return false;
-        }
-        if (productType != other.productType) {
-            return false;
-        }
-        if (quantity != other.quantity) {
-            return false;
-        }
-        if (totalCost == null) {
-            if (other.totalCost != null) {
-                return false;
-            }
-        } else if (!totalCost.equals(other.totalCost)) {
-            return false;
-        }
-        return true;
+        if (checIsNull(other)) return false;
+
+        if (money.getPrice() == null) {
+            return other.money.getPrice() == null;
+        } else return money.getPrice().equals(other.getTotalCost());
     }
 
     /**
      *
-     * @param item
+     * @param other
      * @param delta
      *            acceptable percentage difference
      * @return
      */
     public boolean sameAs(OfferItem other, double delta) {
-        if (productName == null) {
-            if (other.productName != null) {
-                return false;
-            }
-        } else if (!productName.equals(other.productName)) {
-            return false;
-        }
-        if (productPrice == null) {
-            if (other.productPrice != null) {
-                return false;
-            }
-        } else if (!productPrice.equals(other.productPrice)) {
-            return false;
-        }
-        if (productId == null) {
-            if (other.productId != null) {
-                return false;
-            }
-        } else if (!productId.equals(other.productId)) {
-            return false;
-        }
-        if (productType != other.productType) {
-            return false;
-        }
-
-        if (quantity != other.quantity) {
-            return false;
-        }
+        if (checIsNull(other)) return false;
 
         BigDecimal max;
         BigDecimal min;
-        if (totalCost.compareTo(other.totalCost) > 0) {
-            max = totalCost;
-            min = other.totalCost;
+        if (money.getPrice().compareTo(other.getTotalCost()) > 0) {
+            max = money.getPrice();
+            min = other.getTotalCost();
         } else {
-            max = other.totalCost;
-            min = totalCost;
+            max = other.getTotalCost();
+            min = money.getPrice();
         }
 
         BigDecimal difference = max.subtract(min);
         BigDecimal acceptableDelta = max.multiply(BigDecimal.valueOf(delta / 100));
 
         return acceptableDelta.compareTo(difference) > 0;
+    }
+
+    private boolean checIsNull(OfferItem other) {
+        if (product.getName() == null) {
+            if (product.getName() != null) {
+                return true;
+            }
+        } else if (!product.getName().equals(other.getProductName())) {
+            return true;
+        }
+        if (product.getPrice() == null) {
+            if (other.getProductPrice() != null) {
+                return true;
+            }
+        } else if (!product.getPrice().equals(other.getProductPrice())) {
+            return true;
+        }
+        if (product.getId() == null) {
+            if (other.getProductId() != null) {
+                return true;
+            }
+        } else if (!product.getId().equals(other.getProductId())) {
+            return true;
+        }
+        if (!product.getProductType().equals(other.getProductType())) {
+            return true;
+        }
+
+        return quantity != other.quantity;
     }
 
 }
