@@ -93,13 +93,13 @@ public class OfferItem {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (discount == null ? 0 : discount.hashCode());
+        result = prime * result + (discount.getDiscount() == null ? 0 : discount.getDiscount().hashCode());
         result = prime * result + (getProductName() == null ? 0 : getProductName().hashCode());
         result = prime * result + (getProductPrice() == null ? 0 : getProductPrice().hashCode());
         result = prime * result + (getProductId() == null ? 0 : getProductId().hashCode());
         result = prime * result + (getProductType() == null ? 0 : getProductType().hashCode());
         result = prime * result + quantity;
-        result = prime * result + (totalCost == null ? 0 : totalCost.hashCode());
+        result = prime * result + (totalCost.getAmount() == null ? 0 : totalCost.getAmount().hashCode());
         return result;
     }
 
