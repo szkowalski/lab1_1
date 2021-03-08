@@ -18,32 +18,33 @@ import java.util.Date;
 public class OfferItem {
     private Product product;
 
+    private Money money;
+
     private int quantity;
 
     private Discount discount;
 
     private BigDecimal totalCost;
 
-    private String currency;
-
     // discount
 
 
-    public OfferItem(Product product, int quantity) {
-        this(product, quantity, null);
+    public OfferItem(Product product, int quantity, Money money) {
+        this(product, quantity, money, null);
     }
 
-    public OfferItem(Product product, int quantity, Discount discount) {
+    public OfferItem(Product product, int quantity, Money money, Discount discount) {
         this.product = product;
         this.quantity = quantity;
         this.discount = discount;
+        this.money = money;
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
             discountValue = discountValue.subtract(discount.getValue());
         }
 
-        this.totalCost = product.getPrice().multiply(new BigDecimal(quantity)).subtract(discountValue);
+        this.totalCost = product.getMoney().getAmount().multiply(new BigDecimal(quantity)).subtract(discountValue);
     }
 
     public Product getProduct() {
@@ -55,7 +56,7 @@ public class OfferItem {
     }
 
     public String getTotalCostCurrency() {
-        return currency;
+        return money.getCurrency();
     }
 
     public Discount getDiscount(){
@@ -73,6 +74,7 @@ public class OfferItem {
         result = prime * result + (discount == null ? 0 : discount.hashCode());
         result = prime * result + (product == null ?  0 : product.hashCode());
         result = prime * result + quantity;
+        result = prime * result + (money == null ? 0 : money.hashCode());
         result = prime * result + (totalCost == null ? 0 : totalCost.hashCode());
         return result;
     }
@@ -103,11 +105,11 @@ public class OfferItem {
         } else if (!product.getName().equals(other.product.getName())) {
             return false;
         }
-        if (product.getPrice() == null) {
-            if (other.product.getPrice() != null) {
+        if (product.getMoney().getAmount() == null) {
+            if (other.product.getMoney().getAmount() != null) {
                 return false;
             }
-        } else if (!product.getPrice().equals(other.product.getPrice())) {
+        } else if (!product.getMoney().getAmount().equals(other.product.getMoney().getAmount())) {
             return false;
         }
         if (product.getId() == null) {
@@ -148,11 +150,11 @@ public class OfferItem {
         } else if (!product.getName().equals(other.product.getName())) {
             return false;
         }
-        if (product.getPrice() == null) {
-            if (other.product.getPrice() != null) {
+        if (product.getMoney().getAmount() == null) {
+            if (other.product.getMoney().getAmount() != null) {
                 return false;
             }
-        } else if (!product.getPrice().equals(other.product.getPrice())) {
+        } else if (!product.getMoney().getAmount().equals(other.product.getMoney().getAmount())) {
             return false;
         }
         if (product.getId() == null) {
@@ -191,7 +193,7 @@ public class OfferItem {
 class Product{
     private String id;
 
-    private BigDecimal price;
+    private Money money;
 
     private String name;
 
@@ -199,9 +201,9 @@ class Product{
 
     private String type;
 
-    Product(String id, BigDecimal price, String name, Date snapshotDate, String type) {
+    Product(String id, Money money, String name, Date snapshotDate, String type) {
         this.id = id;
-        this.price = price;
+        this.money = money;
         this.name = name;
         this.snapshotDate = snapshotDate;
         this.type = type;
@@ -211,8 +213,8 @@ class Product{
         return id;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public Money getMoney() {
+        return money;
     }
 
     public String getName(){
@@ -233,7 +235,7 @@ class Product{
         final int prime = 31;
         int result = 1;
         result = prime * result + (id == null ? 0 : id.hashCode());
-        result = prime * result + (price == null ? 0 : price.hashCode());
+        result = prime * result + (money == null ? 0 : money.hashCode());
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (snapshotDate == null ? 0 : snapshotDate.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
@@ -267,4 +269,29 @@ class Discount{
         result = prime * result + (value == null ? 0 : value.hashCode());
         return result;
     }
+}
+
+class Money{
+    private String currency;
+
+    private BigDecimal amount;
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public BigDecimal getAmount(){
+        return amount;
+    }
+
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = result * result + (currency == null ? 0 : currency.hashCode());
+        result = result * result + (amount == null ? 0 : amount.hashCode());
+        return  result;
+    }
+
+
 }
