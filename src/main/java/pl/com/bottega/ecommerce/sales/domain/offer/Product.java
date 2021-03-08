@@ -8,6 +8,7 @@ public class Product {
     private String id;
     private String name;
     private String type;
+    private Money price;
 
     public String getProductId() {
         return id;
@@ -25,5 +26,9 @@ public class Product {
         this.id = id;
         this.name = name;
         this.type = type;
+    }
+
+    public Money getPrice() {
+        return price;
     }
 }
