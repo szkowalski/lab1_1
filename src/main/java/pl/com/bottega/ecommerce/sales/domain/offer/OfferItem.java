@@ -20,28 +20,27 @@ public class OfferItem {
 
     private int quantity;
 
+    private Discount discount;
+
     private BigDecimal totalCost;
 
     private String currency;
 
     // discount
-    private String discountCause;
 
-    private BigDecimal discount;
 
     public OfferItem(Product product, int quantity) {
-        this(product, quantity, null, null);
+        this(product, quantity, null);
     }
 
-    public OfferItem(Product product, int quantity, BigDecimal discount, String discountCause) {
+    public OfferItem(Product product, int quantity, Discount discount) {
         this.product = product;
         this.quantity = quantity;
         this.discount = discount;
-        this.discountCause = discountCause;
 
         BigDecimal discountValue = new BigDecimal(0);
         if (discount != null) {
-            discountValue = discountValue.subtract(discount);
+            discountValue = discountValue.subtract(discount.getValue());
         }
 
         this.totalCost = product.getPrice().multiply(new BigDecimal(quantity)).subtract(discountValue);
@@ -59,12 +58,8 @@ public class OfferItem {
         return currency;
     }
 
-    public BigDecimal getDiscount() {
+    public Discount getDiscount(){
         return discount;
-    }
-
-    public String getDiscountCause() {
-        return discountCause;
     }
 
     public int getQuantity() {
@@ -242,6 +237,34 @@ class Product{
         result = prime * result + (name == null ? 0 : name.hashCode());
         result = prime * result + (snapshotDate == null ? 0 : snapshotDate.hashCode());
         result = prime * result + (type == null ? 0 : type.hashCode());
+        return result;
+    }
+}
+
+class Discount{
+    private String cause;
+
+    private BigDecimal value;
+
+    Discount(String cause, BigDecimal value) {
+        this.cause = cause;
+        this.value = value;
+    }
+
+    public String getCause() {
+        return cause;
+    }
+
+    public BigDecimal getValue() {
+        return value;
+    }
+
+    @Override
+    public int hashCode(){
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + (cause == null ? 0 : cause.hashCode());
+        result = prime * result + (value == null ? 0 : value.hashCode());
         return result;
     }
 }
