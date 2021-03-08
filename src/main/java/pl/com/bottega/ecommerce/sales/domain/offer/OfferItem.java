@@ -16,28 +16,29 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class OfferItem {
-
+    public static final int PRIME = 31;
+    public static final int RESULT = 31;
     // product
-    private String productId;
+    private final String productId;
 
-    private BigDecimal productPrice;
+    private final BigDecimal productPrice;
 
-    private String productName;
+    private final String productName;
 
-    private Date productSnapshotDate;
+    private final Date productSnapshotDate;
 
-    private String productType;
+    private final String productType;
 
-    private int quantity;
+    private final int quantity;
 
-    private BigDecimal totalCost;
+    private final BigDecimal totalCost;
 
     private String currency;
 
     // discount
-    private String discountCause;
+    private final String discountCause;
 
-    private BigDecimal discount;
+    private final BigDecimal discount;
 
     public OfferItem(String productId, BigDecimal productPrice, String productName, Date productSnapshotDate,
             String productType, int quantity) {
@@ -51,7 +52,6 @@ public class OfferItem {
         this.productName = productName;
         this.productSnapshotDate = productSnapshotDate;
         this.productType = productType;
-
         this.quantity = quantity;
         this.discount = discount;
         this.discountCause = discountCause;
@@ -106,8 +106,8 @@ public class OfferItem {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final int prime = PRIME;
+        int result = RESULT;
         result = prime * result + (discount == null ? 0 : discount.hashCode());
         result = prime * result + (productName == null ? 0 : productName.hashCode());
         result = prime * result + (productPrice == null ? 0 : productPrice.hashCode());
@@ -158,25 +158,20 @@ public class OfferItem {
         } else if (!productId.equals(other.productId)) {
             return false;
         }
-        if (productType != other.productType) {
+        if (!productType.equals(other.productType)) {
             return false;
         }
         if (quantity != other.quantity) {
             return false;
         }
         if (totalCost == null) {
-            if (other.totalCost != null) {
-                return false;
-            }
-        } else if (!totalCost.equals(other.totalCost)) {
-            return false;
-        }
-        return true;
+            return other.totalCost == null;
+        } else return totalCost.equals(other.totalCost);
     }
 
     /**
      *
-     * @param item
+     * @param other
      * @param delta
      *            acceptable percentage difference
      * @return
@@ -203,7 +198,7 @@ public class OfferItem {
         } else if (!productId.equals(other.productId)) {
             return false;
         }
-        if (productType != other.productType) {
+        if (!productType.equals(other.productType)) {
             return false;
         }
 
